@@ -27,10 +27,10 @@ class GperfToolsConan(NxConanFile):
                          v = self.version,
                          build_dir=build_dir,
                          staging=self.staging_dir,
-                         shared="--enable-shared --disable-static" if self.options.shared else "--enable-static --disable-shared",
-                         cpuprof="--enable-cpu-profiler" if self.options.cpuprof else "--disable-cpu-profiler",
-                         heapprof="--enable-heap-profiler" if self.options.heapprof else "--disable-heap-profiler",
-                         heapchecker="--enable-heap-checker" if self.options.heapchecker else "--disable-heap-checker"))
+                         shared="--enable-shared --disable-static" if self.options["shared"] else "--enable-static --disable-shared",
+                         cpuprof="--enable-cpu-profiler" if self.options["cpuprof"] else "--disable-cpu-profiler",
+                         heapprof="--enable-heap-profiler" if self.options["heapprof"] else "--disable-heap-profiler",
+                         heapchecker="--enable-heap-checker" if self.options["heapchecker"] else "--disable-heap-checker"))
             self.run("cd {build_dir}/gperftools-{v} && make install".format(v = self.version, build_dir = build_dir))
 
     def do_package_info(self):
