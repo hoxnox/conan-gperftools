@@ -28,7 +28,7 @@ class GperfToolsConan(NxConanFile):
                          v = self.version,
                          build_dir=build_dir,
                          staging=self.staging_dir,
-                         is_minimal = "--enable-minimal" if self.options.cpuprof or self.options.heapprof or self.options.heapchecker else "",
+                         is_minimal="" if self.options.cpuprof or self.options.heapprof or self.options.heapchecker else "--enable-minimal",
                          shared="--enable-shared --disable-static" if self.options.shared else "--enable-static --disable-shared",
                          cpuprof="--enable-cpu-profiler" if self.options.cpuprof else "--disable-cpu-profiler",
                          heapprof="--enable-heap-profiler" if self.options.heapprof else "--disable-heap-profiler",
@@ -36,5 +36,9 @@ class GperfToolsConan(NxConanFile):
             self.run("cd {build_dir}/gperftools-{v} && make install".format(v = self.version, build_dir = build_dir))
 
     def do_package_info(self):
-        self.cpp_info.libs = ["tcmalloc_minimal"]
+        if self.options.cpuprof or self.options.heapprof or self.options.heapchecker:
+            self.cpp_info.libs = ["tcmalloc"]
+        else:
+            self.cpp_info.libs = ["tcmalloc_minimal"]
+
 
