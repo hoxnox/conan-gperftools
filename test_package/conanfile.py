@@ -10,6 +10,9 @@ class SnappyTestConan(ConanFile):
     #default_options = "snappy:system=True", "snappy:root=/tmp/sss"
     generators = "cmake"
 
+    def configure(self):
+        self.options["gperftools"].heapprof = True
+
     def build(self):
         cmake = CMake(self)
         self.run('cmake "%s" %s' % (self.source_folder, cmake.command_line))

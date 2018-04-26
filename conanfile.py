@@ -21,12 +21,14 @@ class GperfToolsConan(NxConanFile):
         build_dir = "{staging_dir}/src".format(staging_dir=self.staging_dir)
         tools.untargz("gperftools-{v}.tar.gz".format(v=self.version), build_dir)
         env_build = AutoToolsBuildEnvironment(self)
+        
         with tools.environment_append(env_build.vars):
-            self.run("cd {build_dir}/gperftools-{v} && ./configure --prefix=\"{staging}\" --enable-minimal"
+            self.run("cd {build_dir}/gperftools-{v} && ./configure --prefix=\"{staging}\" {is_minimal}"
                      " {shared} {cpuprof} {heapprof} {heapchecker}".format(
                          v = self.version,
                          build_dir=build_dir,
                          staging=self.staging_dir,
+                         is_minimal = "--enable-minimal" if self.options.cpuprof or self.options.heapprof or self.options.heapchecker else "",
                          shared="--enable-shared --disable-static" if self.options.shared else "--enable-static --disable-shared",
                          cpuprof="--enable-cpu-profiler" if self.options.cpuprof else "--disable-cpu-profiler",
                          heapprof="--enable-heap-profiler" if self.options.heapprof else "--disable-heap-profiler",
