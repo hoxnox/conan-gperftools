@@ -10,6 +10,10 @@ class GperfToolsConan(NxConanFile):
     url = "https://github.com/hoxnox/conan-gperftools"
     license = "https://github.com/gperftools/gperftools/blob/master/COPYING"
 
+    def requirements(self):
+        if self.options.cpuprof or self.options.heapprof or self.options.heapchecker:
+            self.requires("libunwind/1.2@hoxnox/stable")
+
     def do_source(self):
         self.retrieve("6fa2748f1acdf44d750253e160cf6e2e72571329b42e563b455bde09e9e85173",
             [
